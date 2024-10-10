@@ -4,8 +4,8 @@ import allure
 import pytest
 
 
-@allure.feature("Profile functionality")
-class TestProfileFunctionality(BaseTest):
+@allure.feature("Personal details")
+class TestPersonalDetailsPage(BaseTest):
 
     @allure.step("Change profile name")
     @allure.severity("Critical")
@@ -18,9 +18,10 @@ class TestProfileFunctionality(BaseTest):
         self.dashboard_page.is_opened()
         self.dashboard_page.click_my_info_link()
         self.personal_details_page.is_opened()
-        self.personal_details_page.change_name(f"Test {random.randint(1, 100)}")
+        self.personal_details_page.change_first_name(f"Test {random.randint(1, 100)}")
         self.personal_details_page.save_changes()
         self.personal_details_page.changes_are_saved()
+        self.personal_details_page.take_a_screenshot("Name is changed")
 
 
 
