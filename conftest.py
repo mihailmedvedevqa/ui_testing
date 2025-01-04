@@ -7,20 +7,17 @@ import os
 def driver(request):
     options = webdriver.ChromeOptions()
     prefs = {
-        "download.default_directory": os.path.join(os.getcwd(), "downloads")  # Универсальный путь для всех систем
+        "download.default_directory": os.path.join(os.getcwd(), "downloads")  # Universal path for all systems
     }
     options.add_experimental_option("prefs", prefs)
-    # options.add_argument("--no-sandbox")  # Отключает песочницу которая изолирует процессы браузера
-    # options.add_argument("--disable-shm-usage")  # Отключает использование общей памяти для хранения данных
-    # options.add_argument("--headless")  # Для безголового режима
-    # options.add_argument("--window-size=1920,1080")  # Открывает окно браузера в фиксированном размере
-    options.add_argument("--start-maximized")  # Открывает окно браузера в максимальном размере
-    options.add_argument("--ignore-certificate-errors")  # Игнорирует ошибки сертификатов
-    options.add_argument("--disable-extensions")  # Отключает все расширения браузера
-    driver = webdriver.Chrome(options=options)  # Инициализация WebDriver с указанными опциями
-    request.cls.driver = driver  # Связывает драйвер с тестовым классом
-    yield driver  # Возвращает драйвер в тест для работы
-    driver.quit()  # Закрывает браузер после выполнения теста
-
-
-
+    # options.add_argument("--no-sandbox")  # Disables the sandbox that isolates browser processes
+    # options.add_argument("--disable-shm-usage")  # Disables the use of shared memory for storing data
+    # options.add_argument("--headless")  # Enables headless mode
+    # options.add_argument("--window-size=1920,1080")  # Opens the browser window with a fixed size
+    options.add_argument("--start-maximized")  # Opens the browser window in maximized mode
+    options.add_argument("--ignore-certificate-errors")  # Ignores certificate errors
+    options.add_argument("--disable-extensions")  # Disables all browser extensions
+    driver = webdriver.Chrome(options=options)  # Initializes WebDriver with the specified options
+    request.cls.driver = driver  # Associates the driver with the test class
+    yield driver  # Returns the driver to the test for execution
+    driver.quit()  # Closes the browser after the test is complete
