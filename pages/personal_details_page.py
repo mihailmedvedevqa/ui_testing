@@ -1,8 +1,8 @@
-from base.base_page import BasePage
-from config.links import Links
+from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions as EC
 import allure
-from selenium.webdriver import Keys
+from base.base_page import BasePage
+from config.links import Links
 
 
 class PersonalDetailsPage(BasePage):

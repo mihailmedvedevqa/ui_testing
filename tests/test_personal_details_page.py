@@ -1,7 +1,7 @@
 import random
-from base.base_test import BaseTest
-import allure
 import pytest
+import allure
+from base.base_test import BaseTest
 
 
 @allure.feature("Personal details")
@@ -22,10 +22,3 @@ class TestPersonalDetailsPage(BaseTest):
         self.personal_details_page.save_changes()
         self.personal_details_page.changes_are_saved()
         self.personal_details_page.take_a_screenshot("Name is changed")
-
-
-
-
-
-
-
