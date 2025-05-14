@@ -3,10 +3,22 @@ import pytest
 from selenium import webdriver
 
 
+def pytest_addoption(parser):
+    """Add custom command-line options for pytest."""
+
+    parser.addoption(
+        "--browser",
+        action="store",
+        default="chrome",
+        help="Browser to use for tests: chrome or firefox"
+    )
+
+
 @pytest.fixture(scope="function", autouse=True)
 def driver(request, browser="chrome"):
     """Initializes WebDriver for tests."""
 
+    browser = request.config.getoption("--browser")
     driver = None
     if browser.lower() == "chrome":
         options = webdriver.ChromeOptions()
