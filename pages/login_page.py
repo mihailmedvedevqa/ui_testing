@@ -16,7 +16,10 @@ class LoginPage(BasePage):
     def enter_login(self, login):
         username_field = self.wait.until(EC.element_to_be_clickable(self.USERNAME_FIELD))
         username_field.clear()
+        assert username_field.get_attribute("value") == "", "The input field was not cleared"
         username_field.send_keys(login)
+        assert username_field.get_attribute("value") == login, \
+            f"Expected: {login}, Actual: {username_field.get_attribute('value')}"
 
     @allure.step("Enter password")
     def enter_password(self, password):
