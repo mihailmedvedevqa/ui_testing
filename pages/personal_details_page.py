@@ -23,11 +23,11 @@ class PersonalDetailsPage(BasePage):
 
     @allure.step("Save changes")
     def save_changes(self):
-        self.wait.until(EC.element_to_be_clickable(self.SAVE_BUTTON_1)).click()
+        self.click_element(self.SAVE_BUTTON_1)
 
-    @allure.step("Changes are saved")
-    def changes_are_saved(self):
-        self.wait.until(EC.invisibility_of_element_located(self.LOADING_SPINNER))
-        self.wait.until(EC.visibility_of_element_located(self.FIRST_NAME_FIELD))
-        self.wait.until(EC.text_to_be_present_in_element_value(self.FIRST_NAME_FIELD, self.name))
+    @allure.step("Verify changes are saved with name '{expected_name}'")
+    def changes_are_saved(self, expected_name):
+        assert self.is_element_not_visible(self.LOADING_SPINNER), "Loading spinner is still visible"
+        assert self.is_element_visible(self.FIRST_NAME_FIELD), "First name field is not visible"
+        self.wait.until(EC.text_to_be_present_in_element_value(self.FIRST_NAME_FIELD, expected_name))
 
