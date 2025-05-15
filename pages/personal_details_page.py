@@ -1,5 +1,6 @@
-from selenium.webdriver.support import expected_conditions as EC
 import allure
+from selenium.webdriver.support import expected_conditions as EC
+
 from base.base_page import BasePage
 from config.links import Links
 
