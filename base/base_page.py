@@ -87,3 +87,14 @@ class BasePage:
                 return True
             except:
                 return False
+
+    def is_element_present(self, locator, timeout=None):
+        """Check if an element is present in the DOM."""
+
+        with allure.step(f"Check if element {locator} is present in DOM"):
+            try:
+                wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
+                wait.until(EC.presence_of_element_located(locator))
+                return True
+            except:
+                return False
