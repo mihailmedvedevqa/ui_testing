@@ -1,4 +1,3 @@
-from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions as EC
 import allure
 from base.base_page import BasePage
@@ -13,13 +12,10 @@ class PersonalDetailsPage(BasePage):
     SAVE_BUTTON_1 = ("xpath", "(//button[@type='submit'])[1]")
     LOADING_SPINNER = ("xpath", "//div[@class='oxd-loading-spinner']")
 
+    @allure.step("Change first name to '{new_name}'")
     def change_first_name(self, new_name):
-        with allure.step(f"Change name to '{new_name}'"):
-            first_name_field = self.wait.until(EC.visibility_of_element_located(self.FIRST_NAME_FIELD))
-            self.driver.find_element(*self.FIRST_NAME_FIELD).send_keys(Keys.CONTROL + "A")
-            self.driver.find_element(*self.FIRST_NAME_FIELD).send_keys(Keys.BACKSPACE)
-            first_name_field.send_keys(new_name)
-            self.name = new_name
+        self.fill_input(self.FIRST_NAME_FIELD, new_name)
+        return new_name
 
     @allure.step("Save changes")
     def save_changes(self):
@@ -30,4 +26,3 @@ class PersonalDetailsPage(BasePage):
         assert self.is_element_not_visible(self.LOADING_SPINNER), "Loading spinner is still visible"
         assert self.is_element_visible(self.FIRST_NAME_FIELD), "First name field is not visible"
         self.wait.until(EC.text_to_be_present_in_element_value(self.FIRST_NAME_FIELD, expected_name))
-

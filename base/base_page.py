@@ -2,6 +2,7 @@ import allure
 from allure_commons.types import AttachmentType
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.keys import Keys
 
 
 class BasePage:
@@ -47,7 +48,11 @@ class BasePage:
         with allure.step(f"Fill input {locator} with value '{value}'"):
             element = self.find_element(locator)
             element.clear()
-            assert element.get_attribute("value") in ["", None], "The input field was not cleared"
+            if element.get_attribute("value") not in ["", None]:
+                with allure.step("Clear field using Ctrl+A and Backspace"):
+                    element.send_keys(Keys.CONTROL + "A")
+                    element.send_keys(Keys.BACKSPACE)
+                    assert element.get_attribute("value") in ["", None], "The input field was not cleared"
             element.send_keys(value)
             assert element.get_attribute("value") == value, f"Expected '{value}', got '{element.get_attribute('value')}'"
 
