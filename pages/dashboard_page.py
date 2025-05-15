@@ -1,4 +1,3 @@
-from selenium.webdriver.support import expected_conditions as EC
 import allure
 from base.base_page import BasePage
 from config.links import Links
@@ -12,5 +11,4 @@ class DashboardPage(BasePage):
 
     @allure.step("Click 'My Info' link")
     def click_my_info_link(self):
-        self.wait.until(EC.element_to_be_clickable(self.MY_INFO_LINK)).click()
-
+        self.click_element(self.MY_INFO_LINK)
