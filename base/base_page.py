@@ -66,3 +66,13 @@ class BasePage:
                 name=screenshot_name,
                 attachment_type=AttachmentType.PNG
             )
+
+    def is_element_visible(self, locator, timeout=10):
+        """Check if an element is visible."""
+
+        with allure.step(f"Check if element {locator} is visible"):
+            try:
+                self.find_element(locator, timeout)
+                return True
+            except:
+                return False

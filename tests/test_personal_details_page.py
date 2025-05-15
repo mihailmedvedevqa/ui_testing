@@ -21,4 +21,4 @@ class TestPersonalDetailsPage(BaseTest):
         self.personal_details_page.change_first_name(f"Test {random.randint(1, 100)}")
         self.personal_details_page.save_changes()
         self.personal_details_page.changes_are_saved()
-        self.personal_details_page.take_a_screenshot("Fist name is changed")
+        self.personal_details_page.take_screenshot("Fist name is changed")
