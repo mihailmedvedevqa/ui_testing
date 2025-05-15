@@ -1,6 +1,15 @@
 import os
+
+from faker import Faker
 import pytest
 from selenium import webdriver
+
+
+@pytest.fixture(scope="session")
+def fake():
+    """Provide a Faker instance for generating test data."""
+
+    return Faker()
 
 
 def pytest_addoption(parser):
