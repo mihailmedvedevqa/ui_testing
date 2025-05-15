@@ -67,12 +67,23 @@ class BasePage:
                 attachment_type=AttachmentType.PNG
             )
 
-    def is_element_visible(self, locator, timeout=10):
+    def is_element_visible(self, locator, timeout=None):
         """Check if an element is visible."""
 
         with allure.step(f"Check if element {locator} is visible"):
             try:
                 self.find_element(locator, timeout)
+                return True
+            except:
+                return False
+
+    def is_element_not_visible(self, locator, timeout=None):
+        """Check if an element is not visible."""
+
+        with allure.step(f"Check if element {locator} is not visible"):
+            wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
+            try:
+                wait.until(EC.invisibility_of_element_located(locator))
                 return True
             except:
                 return False
