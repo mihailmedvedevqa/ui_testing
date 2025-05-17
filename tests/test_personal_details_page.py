@@ -1,10 +1,12 @@
 import allure
 import pytest
+
 from base.base_test import BaseTest
 
 
 @allure.feature("Personal details page")
 class TestPersonalDetailsPage(BaseTest):
+
     @allure.step("Changing profile first name")
     @allure.severity("Critical")
     @pytest.mark.smoke
