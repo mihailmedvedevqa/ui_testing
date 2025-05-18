@@ -13,10 +13,10 @@ class PersonalDetailsPage(BasePage):
     SAVE_BUTTON_1 = ("xpath", "(//button[@type='submit'])[1]")
     LOADING_SPINNER = ("xpath", "//div[@class='oxd-loading-spinner']")
 
-    @allure.step("Change first name to '{new_name}'")
     def change_first_name(self, new_name):
-        self.fill_input(self.FIRST_NAME_FIELD, new_name)
-        return new_name
+        with allure.step(f"Change first name to '{new_name}'"):
+            self.fill_input(self.FIRST_NAME_FIELD, new_name)
+            return new_name
 
     @allure.step("Save changes")
     def save_changes(self):
