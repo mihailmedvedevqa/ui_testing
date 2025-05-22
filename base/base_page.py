@@ -22,6 +22,13 @@ class BasePage:
         with allure.step(f"Verify that {self.PAGE_URL} page is opened"):
             self.wait.until(EC.url_to_be(self.PAGE_URL))
 
+    def scroll_to_element(self, locator):
+        """Scroll to the element specified by the locator."""
+
+        with allure.step(f"Scroll to element {locator}"):
+            element = self.wait.until(EC.presence_of_element_located(locator))
+            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", element)
+
     def find_element(self, locator, timeout=None):
         """Find a visible element by locator with optional timeout."""
 
