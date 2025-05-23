@@ -7,6 +7,7 @@ from selenium.common.exceptions import TimeoutException
 
 
 class BasePage:
+
     def __init__(self, driver, timeout=15):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout, poll_frequency=1)
@@ -37,24 +38,28 @@ class BasePage:
             wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
             return wait.until(EC.visibility_of_element_located(locator))
 
+    def find_elements(self, locator, timeout=None):
+        """Find all visible elements by locator."""
+
+        with allure.step(f"Find elements with locator {locator}"):
+            wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
+            return wait.until(EC.visibility_of_all_elements_located(locator))
+
     def click_element(self, locator):
         """Click an element after ensuring it is clickable."""
 
         with allure.step(f"Click element {locator}"):
-            element = self.wait.until(EC.element_to_be_clickable(locator))
-            element.click()
+            self.wait.until(EC.element_to_be_clickable(locator)).click()
 
-    def fill_input(self, locator, value):
+    def fill_input(self, locator, value, timeout=None):
         """Clear and fill an input field with the specified value."""
 
         with allure.step(f"Fill input {locator} with value '{value}'"):
-            element = self.find_element(locator)
+            element = self.find_element(locator, timeout)
             element.clear()
-            if element.get_attribute("value") not in ["", None]:
-                with allure.step("Clear field using Ctrl+A and Backspace"):
-                    element.send_keys(Keys.CONTROL + "A")
-                    element.send_keys(Keys.BACKSPACE)
-                    assert element.get_attribute("value") in ["", None], "The input field was not cleared"
+            if element.get_attribute("value"):
+                element.send_keys(Keys.CONTROL + "a", Keys.BACKSPACE)
+                assert not element.get_attribute("value"), "The input field was not cleared"
             element.send_keys(value)
             assert element.get_attribute("value") == value, f"Expected '{value}', got '{element.get_attribute('value')}'"
 
@@ -77,12 +82,11 @@ class BasePage:
     def is_element_visible(self, locator, timeout=None):
         """Check if an element is visible."""
 
-        with allure.step(f"Check if element {locator} is visible"):
-            try:
-                self.find_element(locator, timeout)
-                return True
-            except TimeoutException:
-                return False
+        try:
+            self.find_element(locator, timeout)
+            return True
+        except TimeoutException:
+            return False
 
     def is_element_not_visible(self, locator, timeout=None):
         """Check if an element is not visible."""
