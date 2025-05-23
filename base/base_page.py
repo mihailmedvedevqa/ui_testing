@@ -3,6 +3,7 @@ from allure_commons.types import AttachmentType
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import ElementClickInterceptedException
 
 
 class BasePage:
@@ -30,24 +31,25 @@ class BasePage:
             self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", element)
 
     def find_element(self, locator, timeout=None):
-        """Find a visible element by locator with optional timeout."""
+        """Find a visible element by locator."""
 
         with allure.step(f"Find element with locator {locator}"):
             wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
             return wait.until(EC.visibility_of_element_located(locator))
 
     def find_elements(self, locator, timeout=None):
-        """Find all visible elements by locator with optional timeout."""
+        """Find all visible elements by locator."""
 
         with allure.step(f"Find elements with locator {locator}"):
             wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
             return wait.until(EC.presence_of_all_elements_located(locator))
 
     def click_element(self, locator):
-        """Click an element when it becomes clickable."""
+        """Click an element after ensuring it is clickable."""
 
-        with allure.step(f"Click element with locator {locator}"):
-            self.wait.until(EC.element_to_be_clickable(locator)).click()
+        with allure.step(f"Click element {locator}"):
+            element = self.wait.until(EC.element_to_be_clickable(locator))
+            element.click()
 
     def fill_input(self, locator, value):
         """Clear and fill an input field with the specified value."""
