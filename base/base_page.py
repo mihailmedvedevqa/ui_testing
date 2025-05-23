@@ -3,7 +3,7 @@ from allure_commons.types import AttachmentType
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import TimeoutException
 
 
 class BasePage:
@@ -36,13 +36,6 @@ class BasePage:
         with allure.step(f"Find element with locator {locator}"):
             wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
             return wait.until(EC.visibility_of_element_located(locator))
-
-    def find_elements(self, locator, timeout=None):
-        """Find all visible elements by locator."""
-
-        with allure.step(f"Find elements with locator {locator}"):
-            wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
-            return wait.until(EC.presence_of_all_elements_located(locator))
 
     def click_element(self, locator):
         """Click an element after ensuring it is clickable."""
@@ -88,7 +81,7 @@ class BasePage:
             try:
                 self.find_element(locator, timeout)
                 return True
-            except:
+            except TimeoutException:
                 return False
 
     def is_element_not_visible(self, locator, timeout=None):
@@ -99,7 +92,7 @@ class BasePage:
             try:
                 wait.until(EC.invisibility_of_element_located(locator))
                 return True
-            except:
+            except TimeoutException:
                 return False
 
     def is_element_present(self, locator, timeout=None):
@@ -110,5 +103,5 @@ class BasePage:
                 wait = self.wait if timeout is None else WebDriverWait(self.driver, timeout, poll_frequency=1)
                 wait.until(EC.presence_of_element_located(locator))
                 return True
-            except:
+            except TimeoutException:
                 return False
