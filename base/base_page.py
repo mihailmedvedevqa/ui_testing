@@ -63,11 +63,11 @@ class BasePage:
             element.send_keys(value)
             assert element.get_attribute("value") == value, f"Expected '{value}', got '{element.get_attribute('value')}'"
 
-    def get_element_text(self, locator):
+    def get_element_text(self, locator, timeout=None):
         """Get text from a visible element."""
 
         with allure.step(f"Get text from element with locator {locator}"):
-            return self.find_element(locator).text
+            return self.find_element(locator, timeout).text
 
     def take_screenshot(self, screenshot_name):
         """Take a screenshot and attach it to Allure report."""
