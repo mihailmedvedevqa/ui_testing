@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class Data:
-    """Loads environment variables from .env file to provide test credentials."""
+    """Loads environment variables from .env file."""
 
     LOGIN = os.getenv("LOGIN")
     PASSWORD = os.getenv("PASSWORD")
