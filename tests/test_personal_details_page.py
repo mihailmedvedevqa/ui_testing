@@ -7,10 +7,10 @@ from base.base_test import BaseTest
 @allure.feature("Personal details page")
 class TestPersonalDetailsPage(BaseTest):
 
-    @allure.step("Changing profile first name")
+    @allure.step("Changing first name")
     @allure.severity("Critical")
     @pytest.mark.smoke
-    def test_changing_profile_first_name(self, fake):
+    def test_changing_first_name(self, fake):
         new_name = fake.first_name()
         self.login_page.open()
         self.login_page.enter_login(self.data.LOGIN)
