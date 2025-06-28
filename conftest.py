@@ -34,11 +34,11 @@ def driver(request, browser="chrome"):
         prefs = {"download.default_directory": os.path.join(os.getcwd(), "downloads")}
         options.add_experimental_option("prefs", prefs)
         # For headless mode in CI/CD:
-        # options.add_argument("--headless")  # Run without GUI
-        # options.add_argument("--window-size=1920,1080")  # Fixed window size
-        # options.add_argument("--no-sandbox")  # Required for Docker/CI
-        # options.add_argument("--disable-shm-usage")  # Improve stability in CI
-        options.add_argument("--start-maximized")
+        options.add_argument("--headless")  # Run without GUI
+        options.add_argument("--window-size=1920,1080")  # Fixed window size
+        options.add_argument("--no-sandbox")  # Required for Docker/CI
+        options.add_argument("--disable-shm-usage")  # Improve stability in CI
+        # options.add_argument("--start-maximized")
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--disable-extensions")
         driver = webdriver.Chrome(options=options)

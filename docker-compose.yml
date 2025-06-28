@@ -1,0 +1,24 @@
+services:
+  regression:
+    image: ui-tests:v1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/usr/workspace
+    command: /bin/sh -c "pytest -sv --alluredir=allure-results"
+    working_dir: /usr/workspace
+    environment:
+      LOGIN: ${LOGIN}
+      PASSWORD: ${PASSWORD}
+  report:
+    image: ui-tests:v1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/usr/workspace
+    command: /bin/sh -c "allure generate allure-results --clean -o allure-report"
+    working_dir: /usr/workspace
+    depends_on:
+      - regression
