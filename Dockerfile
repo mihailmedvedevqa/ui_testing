@@ -1,8 +1,9 @@
 FROM python:3.13.5-alpine
 
-# Установка chromedriver и системных зависимостей
+# Установка chromium и системных зависимостей (без chromium-chromedriver)
 RUN apk update && \
-    apk add --no-cache chromium chromium-chromedriver openjdk11-jre tzdata curl tar gcc musl-dev libffi-dev python3-dev
+    apk add --no-cache chromium openjdk11-jre tzdata curl tar gcc musl-dev libffi-dev python3-dev && \
+    chromium --version # Проверка версии Chromium
 
 # Установка Allure Command Line
 RUN curl -o allure-2.34.1.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.34.1/allure-commandline-2.34.1.tgz && \
@@ -13,12 +14,10 @@ RUN curl -o allure-2.34.1.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta
 # Установка рабочей директории
 WORKDIR /usr/workspace
 
-# Копирование requirements.txt и проверка его наличия
+# Копирование requirements.txt и установка Python-зависимостей
 COPY ./requirements.txt /usr/workspace/requirements.txt
-RUN ls -la /usr/workspace/requirements.txt && \
-    cat /usr/workspace/requirements.txt && \
-    pip3 install --no-cache-dir -r /usr/workspace/requirements.txt && \
-    pip3 show pytest # Проверка установки pytest
+RUN pip3 install --no-cache-dir --resume-retries=5 -r /usr/workspace/requirements.txt && \
+    pip3 show pytest webdriver-manager # Проверка установки pytest и webdriver-manager
 
 # Копирование проекта
 COPY . /usr/workspace
