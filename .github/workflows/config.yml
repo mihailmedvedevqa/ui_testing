@@ -29,11 +29,11 @@ jobs:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          docker-compose up --exit-code-from ui-tests
+          docker compose up --exit-code-from ui-tests
 
       - name: Generate Allure report
         run: |
-          docker-compose run report
+          docker compose run report
 
       - name: Update Allure history
         run: |
