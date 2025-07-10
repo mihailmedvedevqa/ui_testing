@@ -1,6 +1,6 @@
 name: UI Tests
 
-on: [push]
+on: workflow_dispatch
 
 jobs:
   ui-tests:
@@ -24,7 +24,7 @@ jobs:
             cp -R ./.github/gh-pages/history/* allure-results/history/ || true
           fi
 
-      - name: Run UI tests via docker-compose
+      - name: Run UI Tests
         env:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
