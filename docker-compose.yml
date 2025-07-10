@@ -11,6 +11,7 @@ services:
     environment:
       LOGIN: ${LOGIN}
       PASSWORD: ${PASSWORD}
+
   report:
     image: ui-tests:v1
     build:
@@ -20,3 +21,5 @@ services:
       - ./:/usr/workspace
     command: /bin/sh -c "allure generate allure-results --clean -o allure-report"
     working_dir: /usr/workspace
+    depends_on:
+      - ui-tests
