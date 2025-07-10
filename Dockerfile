@@ -15,9 +15,7 @@ RUN curl -o allure-2.34.1.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta
 WORKDIR /usr/workspace
 
 # Копирование requirements.txt и установка Python-зависимостей
-COPY ./requirements.txt /usr/workspace/requirements.txt
-RUN pip3 install --no-cache-dir --resume-retries=5 -r /usr/workspace/requirements.txt && \
-    pip3 show pytest webdriver-manager # Проверка установки pytest и webdriver-manager
+COPY ./requirements.txt /usr/workspace
 
 # Копирование проекта
 COPY . /usr/workspace
