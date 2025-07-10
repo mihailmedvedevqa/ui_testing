@@ -1,0 +1,49 @@
+name: UI Tests
+
+on: [push]
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout gh-pages for history
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: ./.github/gh-pages
+
+      - name: Create allure-results directory
+        run: mkdir -p allure-results/history
+
+      - name: Copy history from gh-pages to allure-results
+        run: |
+          if [ -d "./.github/gh-pages/history" ]; then
+            cp -R ./.github/gh-pages/history/* allure-results/history/ || true
+          fi
+
+      - name: Run UI tests via docker-compose
+        env:
+          LOGIN: ${{ secrets.LOGIN }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+        run: |
+          docker-compose up --exit-code-from ui-tests
+
+      - name: Generate Allure report
+        run: |
+          docker-compose run report
+
+      - name: Update Allure history
+        run: |
+          mkdir -p ./.github/gh-pages/history
+          cp -R allure-report/history/* ./.github/gh-pages/history/ || true
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          branch: gh-pages
+          folder: allure-report
+          clean: true
