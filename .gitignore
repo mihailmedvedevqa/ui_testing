@@ -2,6 +2,5 @@
 /.idea
 /.env
 __pycache__
-*.iml
-report
+allure-report
 allure-results
