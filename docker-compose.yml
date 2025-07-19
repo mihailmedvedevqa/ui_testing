@@ -1,4 +1,5 @@
 services:
+  # Service for running UI tests
   ui-tests:
     image: ui-tests:v1
     build:
@@ -6,12 +7,14 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/usr/workspace
+    # Run pytest with verbose output and save Allure results
     command: /bin/sh -c "pytest -sv --alluredir=allure-results"
     working_dir: /usr/workspace
     environment:
       LOGIN: ${LOGIN}
       PASSWORD: ${PASSWORD}
 
+  # Service for generating Allure HTML report
   report:
     image: ui-tests:v1
     build:
@@ -19,6 +22,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/usr/workspace
+    # Generate clean Allure report from test results
     command: /bin/sh -c "allure generate allure-results --clean -o allure-report"
     working_dir: /usr/workspace
     depends_on:
