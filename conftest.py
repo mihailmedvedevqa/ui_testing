@@ -69,15 +69,18 @@ def fake():
 def driver(request):
     """Initializes WebDriver for tests."""
     options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--window-size=1920,1080")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-extensions")
-    options.add_argument("--disable-infobars")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--enable-logging")  # Включаем логирование
-    options.add_argument("--v=1")
+    # Core CI/CD settings
+    options.add_argument("--headless")  # Run without GUI (required for CI/CD)
+    options.add_argument("--window-size=1920,1080")  # Fixed window size
+    options.add_argument("--no-sandbox")  # Disable sandbox (needed for Docker/CI)
+    options.add_argument("--disable-dev-shm-usage")  # Fixes memory issues in Docker
+    # Performance optimization
+    options.add_argument("--disable-extensions")  # Disable extensions
+    options.add_argument("--disable-gpu")  # Disable GPU in headless mode
+    options.add_argument("--disable-infobars")  # Disable info bars
+    # Logging (can be removed for production)
+    # options.add_argument("--enable-logging")  # Enable logging
+    # options.add_argument("--v=1")  # Log verbosity level
     driver = webdriver.Chrome(options=options)
     request.cls.driver = driver
     yield driver
