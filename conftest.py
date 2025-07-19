@@ -1,7 +1,7 @@
 import os
 
-from faker import Faker
 import pytest
+from faker import Faker
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
